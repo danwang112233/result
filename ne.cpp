@@ -38,7 +38,7 @@ int sgn(double d)
 }
 
 //
-int ReadLine(char *filename, int line, int nz, int natoms, const char *output)//, const char *file)  
+int ReadLine(char *filename, int line, int nz, int natoms, const char *output, double ne)//, const char *file)  
 {  
    
    double data[natoms][5];  
@@ -72,7 +72,7 @@ int ReadLine(char *filename, int line, int nz, int natoms, const char *output)//
          
    }
     ReadDump.close();
-polar[0] = (double)nz;
+polar[0] = (double)ne;
 //cout<< polar[0] <<endl;
       for(int k = 2; k < 5; k++)
          {   double sum =0.0;
@@ -104,9 +104,9 @@ int main(int argc,char **argv)
 	{//
     //char filename[]="polpldump_1";  
     //char finalname[]="polpldump_fin_1";
-	if(argc != 4) 
+	if(argc != 5) 
 		{
-		cout << "Usage: ./readpol nz ne_min ne_max.\n" <<// "filename: type of dump file you'd like to read, such as pol, displ, etc. ATTENTION: the word of dump will be added after the input type.\n" 
+		cout << "Usage: ./readpol nz ne_min ne_max delta.\n" <<// "filename: type of dump file you'd like to read, such as pol, displ, etc. ATTENTION: the word of dump will be added after the input type.\n" 
  "nz: the number of unit cells in z-direction" << endl;
 		}
 	else
@@ -115,12 +115,15 @@ int main(int argc,char **argv)
 				int nz = argv[1];
 				int ne_min = argv[2];
 				int ne_max = argv[3];
+				double delta = argv[4];
    			 	char *a;
 				for (int i = ne_min; i < ne_max + 1; i++)
-    				{a = new char[strlen("poldump_")+sizeof(ne)];
+    				{
+					double ne = delta * i;
+				a = new char[strlen("poldump_")+sizeof(i)];
         			//char *b;
         			//b = new char[strlen("displdump")+sizeof(ne)];
-    				sprintf(a, "%s%d", "poldump_", ne);
+    				sprintf(a, "%s%d", "poldump_", i);
     				//sprintf(b, "%s%d", "displdump", ne);
     				char *filename = a; 
     				//char *finalname = b;
@@ -134,7 +137,7 @@ int main(int argc,char **argv)
    	 			//const char *d = "polarization_final";
     
 
-  	 			ReadLine(filename, n, nz, natoms, c);
+  	 			ReadLine(filename, n, nz, natoms, c, ne);
  				//ReadLine(finalname, nf, nz, natoms, d);
 }
   				t2 = clock();
