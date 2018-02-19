@@ -105,8 +105,20 @@ int main()
     t1 = clock();
     //char filename[]="polpldump_1";  
     //char finalname[]="polpldump_fin_1";
-    char filename[]="displdump"; 
     int nz = 8;//
+ for(int i = -5; i < 5 +1; ++i)
+                                {
+                                double e = double(i) * 0.02;
+                                char *a;
+                                int j = i - ne_min + 1;
+ a = new char[strlen("poldump_")+sizeof(j)];
+                                //char *b;
+                                //b = new char[strlen("poldump")+sizeof(i)];
+                                sprintf(a, "%s%d", "poldump_", j);
+                                //sprintf(b, "%s%d", "displdump", i);
+                                char *filename = a;
+                                //char *finalname = b;
+
     int n = CountLines(filename);
     //int nf = CountLines(finalname);
     int natoms = 10*6*6*nz;//10 * 10 * nz;    
@@ -117,6 +129,7 @@ int main()
     file.open("polarization");
     ReadLine(filename, n, nz, natoms);
     //ReadLine(finalname, nf, nz, natoms);
+ }
     t2 = clock();
     cout<<"Time: "<< double (t2-t1)/CLOCKS_PER_SEC << " s."<<endl;
 }  
